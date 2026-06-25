@@ -5,26 +5,46 @@ function Cart({ cart, increase, decrease }) {
     );
 
     return (
-        <div>
-            <h2>Cart</h2>
+        <div className="cart">
+            <h2>Shopping Cart</h2>
 
-            {cart.map((item) => (
-                <div key={item._id}>
-                    <p>{item.productName}</p>
+            {cart.length === 0 ? (
+                <p>Cart is empty</p>
+            ) : (
+                cart.map((item) => (
+                    <div
+                        key={item._id}
+                        className="cart-item"
+                    >
+                        <div>
+                            <strong>{item.productName}</strong>
+                            <p>₹{item.price}</p>
+                        </div>
 
-                    <button onClick={() => decrease(item._id)}>
-                        -
-                    </button>
+                        <div className="qty-controls">
+                            <button
+                                className="qty-btn"
+                                onClick={() => decrease(item._id)}
+                            >
+                                -
+                            </button>
 
-                    {item.quantity}
+                            <span>{item.quantity}</span>
 
-                    <button onClick={() => increase(item._id)}>
-                        +
-                    </button>
-                </div>
-            ))}
+                            <button
+                                className="qty-btn"
+                                onClick={() => increase(item._id)}
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+                ))
+            )}
 
-            <h3>Total: ₹{total}</h3>
+            <div className="total">
+                Total: ₹{total}
+            </div>
         </div>
     );
 }

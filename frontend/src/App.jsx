@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import API from "./services/api";
+import { useState, useEffect } from "react";
+import "./App.css";
 import ProductCard from "./components/ProductCard";
 import Cart from "./components/Cart";
+import API from "./services/api";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -12,33 +13,31 @@ function App() {
   }, []);
 
   const fetchProducts = async () => {
-    const res = await API.get("/products");
-    setProducts(res.data);
+    try {
+      const res = await API.get("/products");
+      setProducts(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const addToCart = (product) => {
-    const exist = cart.find(
+    const existingItem = cart.find(
       (item) => item._id === product._id
     );
 
-    if (exist) {
+    if (existingItem) {
       setCart(
         cart.map((item) =>
           item._id === product._id
-            ? {
-              ...item,
-              quantity: item.quantity + 1,
-            }
+            ? { ...item, quantity: item.quantity + 1 }
             : item
         )
       );
     } else {
       setCart([
         ...cart,
-        {
-          ...product,
-          quantity: 1,
-        },
+        { ...product, quantity: 1 }
       ]);
     }
   };
@@ -47,10 +46,7 @@ function App() {
     setCart(
       cart.map((item) =>
         item._id === id
-          ? {
-            ...item,
-            quantity: item.quantity + 1,
-          }
+          ? { ...item, quantity: item.quantity + 1 }
           : item
       )
     );
@@ -61,10 +57,7 @@ function App() {
       cart
         .map((item) =>
           item._id === id
-            ? {
-              ...item,
-              quantity: item.quantity - 1,
-            }
+            ? { ...item, quantity: item.quantity - 1 }
             : item
         )
         .filter((item) => item.quantity > 0)
@@ -73,7 +66,9 @@ function App() {
 
   return (
     <div className="container">
-      <h1>E-Commerce Store</h1>
+      <h1 className="title">
+        E-Commerce Store ({cart.length} Items)
+      </h1>
 
       <div className="products">
         {products.map((product) => (
