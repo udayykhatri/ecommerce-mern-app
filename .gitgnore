@@ -14,3 +14,7 @@ frontend/dist
 # OS files
 .DS_Store
 Thumbs.db
+
+backend/.env
+frontend/node_modules
+backend/node_modules
